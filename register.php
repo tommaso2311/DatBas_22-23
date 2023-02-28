@@ -1,23 +1,16 @@
 <?php
-try {
-    $conn = new PDO('mysql:host=localhost; dbname=DATABASE_PROJ', 'root', 'root');
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo ("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
-    exit();
-}
-
+require 'connect.php';
+$conn = connectToDatabase();
 
 $email = $_POST['email'];
-try {
-    $sql = "INSERT INTO UTENTI (eMail) VALUES ('$email')";
-    $conn->exec($sql);
-    echo "aggiunto";
 
+try {
+    $insert = "INSERT INTO UTENTI (eMail) VALUES ('$email')";
+    $conn->query($insert);
+    echo "Aggiunto";
 } catch (PDOException $e) {
-    if ($e->errorInfo[1] == 1062) { // errore di duplicazione
-        echo "Esiste già";
-    }
+    echo ("[ERRORE] Query SQL (Insert) non riuscita. Errore: " . $e->getMessage());
+    exit();
 }
 
 
