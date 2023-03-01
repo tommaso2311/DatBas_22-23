@@ -7,8 +7,8 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-CREATE TABLE `UTENTI` (
-  `eMail` varchar(30) NOT NULL PRIMARY KEY,
+CREATE TABLE UTENTE (
+  'eMail' varchar(30) NOT NULL PRIMARY KEY,
   `Nome` varchar(30) NOT NULL,
   `Cognome` varchar(30) NOT NULL,
   `Anno di nascita` year(4) NOT NULL,
