@@ -8,10 +8,10 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 CREATE TABLE UTENTE (
-  'eMail' varchar(30) NOT NULL PRIMARY KEY,
-  `Nome` varchar(30) NOT NULL,
-  `Cognome` varchar(30) NOT NULL,
-  `Anno di nascita` year(4) NOT NULL,
-  `Luogo di nascita` varchar(30) NOT NULL,
-  `totale bonus` int(11) NOT NULL DEFAULT '0'
+  eMail varchar(30) NOT NULL PRIMARY KEY,
+  Nome varchar(30) NOT NULL DEFAULT "",
+  Cognome varchar(30) NOT NULL DEFAULT "",
+  Anno_di_nascita year NOT NULL DEFAULT 2000,
+  Luogo_di_nascita varchar(30) NOT NULL DEFAULT "",
+  totale_bonus int(11) NOT NULL DEFAULT '0'
 ) ENGINE="InnoDB"

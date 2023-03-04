@@ -4,8 +4,8 @@ function connectToDatabase()
    $config = [
       $hostname = "localhost",
       $dbname = "DATABASE_PROJ",
-      $user = "tommaso", // da cambiare con i vostri dati
-      $pass = "basididati", // da cambiare con i vostri dati
+      $user = "root", // da cambiare con i vostri dati
+      $pass = "password", // da cambiare con i vostri dati
    ];
 
    try {
@@ -16,3 +16,5 @@ function connectToDatabase()
       die("Could not connect to the database $dbname :" . $pe->getMessage());
    }
 }
+
+?>

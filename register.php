@@ -5,7 +5,7 @@ $conn = connectToDatabase();
 $email = $_POST['email'];
 
 try {
-    $insert = "INSERT INTO UTENTI (eMail) VALUES ('$email')";
+    $insert = "INSERT INTO UTENTE (eMail) VALUES ('$email')";
     $conn->query($insert);
     echo "Aggiunto";
 } catch (PDOException $e) {
