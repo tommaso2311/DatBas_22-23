@@ -9,7 +9,7 @@ A cura di Arianna Arruzzoli, Ilaria Golluscio, Tommaso Quintavalli.
 Docenti: Marco di Felice, Luca Sciullo.
 
 Per eseguire l'applicazione, è necessario installare PHP ed attivare il server. Questa operazione
-viene fatta aprendo un terminale nelòa cartella del progetto e digitando:
+viene fatta aprendo un terminale nella cartella del progetto e digitando:
 
 'php -S localhost:8889'
 
@@ -19,9 +19,9 @@ A questo punto, per selezionare il database, bisogna specificare nella configura
 la Base Directory, mettendoci la cartella del progetto.
 Bisogna quindi aprire un nuovo terminale e digitare:
 
-'/usr/local/mysql/bin/mysql -uroot -p'
+'/user/local/mysql/bin/mysql -u root -p'
 
-per poi inserire la apssword di MySQL.
+per poi inserire la password di MySQL.
 
 Bisogna poi creare un database nuovo, selezionrarlo ed importarvi il file 'database.sql' tramite 
 
@@ -32,11 +32,11 @@ Questi ultimi passi vanno fatti solo la prima volta.
 Per intergaire con il DB da terminale, per le volte successive basta
 mandare il comando
 
-'/usr/local/mysql/bin/mysql -uroot -p'
+'/usr/local/mysql/bin/mysql -u root -p'
 
 e poi selezionare il DB con
 
-use DATBASE_PROJ;
+use DATABASE_PROJ;
 
 A questo punto basta recarsi all'indirizzo
 
