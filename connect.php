@@ -9,7 +9,7 @@ function connectToDatabase()
    ];
 
    try {
-      $conn = new PDO("mysql:host=$hostname;port=8889;dbname=$dbname", $user, $pass);
+      $conn = new PDO("mysql:host=$hostname;dbname=$dbname", $user, $pass);
       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $conn;
    } catch (PDOException $pe) {
