@@ -55,16 +55,20 @@ CREATE TABLE SONDAGGIO (
     Titolo varchar(30) NOT NULL,
     maxUTENTE int DEFAULT 100,
     dataCreazione datetime DEFAULT NOW(),
-    dataChiusura date, #CAPIRE COME METTERE IL DEFAULT A OGGI  
-    stato ENUM('APERTO', 'CHIUSO')
+    dataChiusura datetime DEFAULT (NOW() + INTERVAL 1 MONTH), 
+    stato ENUM('APERTO', 'CHIUSO'),
+    CHECK (dataChiusura > dataCreazione)
 ) ENGINE = 'INNODB';
 
-CREATE TABLE CREAZIONE_SONDAGGI(
+CREATE TABLE CREAZIONE_SONDAGGIO_UTENTE(
 	emailUtente varchar(30) REFERENCES UTENTE(eMail),
     codiceNuovoSondaggio varchar(30) PRIMARY KEY REFERENCES SONDAGGIO(Codice)
 ) ENGINE = 'INNODB';
 
-### CONTROLLA CHE DATACHIUSURA > DATACREAZIONE --> forse conviene timestamp
+CREATE TABLE CREAZIONE_SONDAGGIO_AZIENDE(
+	codiceAzienda varchar(30) REFERENCES AZIENDE(codiceFiscale),
+    codiceNuovoSondaggio varchar(30) PRIMARY KEY REFERENCES SONDAGGIO(Codice)
+) ENGINE = 'INNODB';
 
 CREATE TABLE PROPRIETA (
 	codiceSondaggio varchar(30) PRIMARY KEY REFERENCES SONDAGGIO(Codice),
@@ -97,10 +101,16 @@ CREATE TABLE OPZIONE(
     PRIMARY KEY (idOpzione, idDomanda)
 )ENGINE='INNODB';
 
-CREATE TABLE INSERIMENTO_DOMANDE(
+CREATE TABLE INSERIMENTO_DOMANDE_UTENTI(
 	emailUtente varchar(30) REFERENCES UTENTE(eMail),
     idDomanda varchar(30) REFERENCES DOMANDA(ID),
     PRIMARY KEY (emailUtente, idDomanda)
+) ENGINE ='INNODB';
+
+CREATE TABLE INSERIMENTO_DOMANDE_AZIENDA(
+	codiceAzienda varchar(30) REFERENCES AZIENDE(codiceFiscale),
+    idDomanda varchar(30) REFERENCES DOMANDA(ID),
+    PRIMARY KEY (codiceAzienda, idDomanda)
 ) ENGINE ='INNODB';
 
 #tabelle risposte 
@@ -152,69 +162,5 @@ CREATE TABLE ASSOCIAZIONE_LISTA (
     UNIQUE KEY (codiceSondaggio)
 )ENGINE='INNODB';
 
-DELIMITER $$
-## • Autenticazione sulla piattaforma
-CREATE PROCEDURE Login(IN email varchar(30), OUT isRegistered boolean)
-BEGIN
-	SET isRegistered = EXISTS (SELECT * FROM UTENTI WHERE eMail=email);
-END $$
-## • registrazione sulla piattaforma 
-CREATE PROCEDURE RegistrazioneUtente(IN email varchar(30), nome varchar(30), cognome varchar(30), Anno_di_nascita varchar(30), Luogo_di_Nascita varchar(30))
-BEGIN
-	INSERT INTO UTENTE(eMail, Nome, Cognome, `Anno di nascita`, `Luogo di nascita`) 
-                VALUES (email, nome, cognome, Anno_di_nascita, Luogo_di_Nascita);
-END $$
-## • Collegamento ad un dominio di interesse 
-CREATE PROCEDURE InserisciInteresse(IN utenteAttuale varchar(30), nomeDominio varchar(30))
-BEGIN
-	INSERT INTO INTERESSI VALUES (utenteAttuale, nomeDominio);
-END $$
-##• Visualizzazione degli inviti a partecipare ad un sondaggio
-CREATE PROCEDURE VisualizzaInviti(IN utenteAttuale varchar(30))
-BEGIN
-	SELECT Autore, codiceSondaggio FROM INVITO 
-	WHERE Destinatario = utenteAttuale;
-END $$
-##• Accettazione/rifiuto di un invito
-CREATE PROCEDURE RiscontroInvito(IN codiceInvito varchar(30), riscontro varchar(30))
-BEGIN
-	IF riscontro = 'ACCETTATO' THEN
-		UPDATE INVITO SET Esito = 'ACCETTATO' WHERE Codice = codiceInvito;
-	ELSE
-		UPDATE INVITO SET Esito = 'RIFIUTATO' WHERE Codice = codiceInvito;
-	END IF;
-END $$
-##• Inserimento delle risposte per un sondaggio
-CREATE PROCEDURE InserireRisposta(IN email varchar(30), codiceSondaggio varchar(30), codiceDomanda varchar(30), testo varchar(120))
-BEGIN
-	SET isAperta = EXISTS (SELECT * FROM DOMANDA_APERTA WHERE codiceDomanda= ID);
-    IF isAperta THEN
-		SET stato = 'APERTO';
-	ELSE
-		SET stato = 'CHIUSO';
-	END IF;
-	INSERT INTO RISPOSTA (codiceDomanda, testoRisposta, tipo, emailUtente) 
-				VALUES (codiceDomanda, testo, stato, email);
-END $$
 
-##• Visualizzazione dei sondaggi cui si è partecipato 
-CREATE PROCEDURE VisualizzaSondaggi(IN utenteAttuale varchar(30))
-BEGIN
-	SELECT Titolo, stato FROM SONDAGGIO, ASSOCIAZIONE_LISTA
-    WHERE Codice=codiceSondaggio AND numeroLista IN (SELECT Numero FROM LISTA_UTENTE WHERE emailUtente=utenteAttuale);
-END $$
-#e delle risposte relative
-CREATE PROCEDURE VisualizzaRisposteDate(IN utenteAttuale varchar(30), codiceSondaggio varchar(30))
-BEGIN
-	SELECT RISPOSTA.testoRisposta, DOMANDA.Testo FROM RISPOSTA, DOMANDA
-    WHERE RISPOSTA.codiceDomanda = DOMANDA.ID AND
-    RISPOSTA.emailUtente = utenteAttuale AND 
-    DOMANDA.ID IN (SELECT idDomanda FROM COMPOSIZIONE WHERE COMPOSIZIONE.codiceSondaggio = codiceSondaggio);
-END $$
-##• Visualizzazione dei premi conseguiti
-CREATE PROCEDURE VisualizzaPremi(IN utenteAttuale varchar(30))
-BEGIN
-	SELECT Nome, Descrizione FROM PREMIO 
-    WHERE Nome in (SELECT nomePremio FROM PREMI_VINTI WHERE emailUtente=utenteAttuale);
-END $$
 
