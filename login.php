@@ -1,30 +1,21 @@
 <?php
-require 'connect.php';
-$conn = connectToDatabase();
 
-$email = $_GET['emailL'];
 
+$email = $_POST['emailLogin'];
 try {
-   
-    $exists = "CALL Login('$email', @result)";
-    $result= $conn ->query($exists);
-    $select = "SELECT @result as result";
-    $result= $conn ->query($select);
-    $isLogged = $result->fetch();
-    
-    function redirect( $statusCode = 401)
-    {
-        header('Location: /index.php', true, $statusCode);
-        die();
-    }
-    
-    if ($isLogged['result']==1){
-    echo "Benvenuto";
-    } else {
-        
-    } 
+    $log = "SELECT COUNT(*) AS counter FROM UTENTE WHERE ('$email'=eMail)";
+    $res = $conn->prepare($log);
+    $res->execute();
+
 } catch (PDOException $e) {
-    echo ("[ERRORE] Query SQL (Insert) non riuscita. Errore: " . $e->getMessage());
-    exit();
 }
+
+$row = $res->fetch();
+if ($row['counter'] > 0) {
+    session_start();
+    echo "loggato!";
+} else {
+    echo "non esisti!";
+}
+
 ?>
