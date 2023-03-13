@@ -11,17 +11,12 @@ try {
     $select = "SELECT @result as result";
     $result= $conn ->query($select);
     $isLogged = $result->fetch();
-    
-    function redirect( $statusCode = 401)
-    {
-        header('Location: /index.php', true, $statusCode);
-        die();
-    }
+
     
     if ($isLogged['result']==1){
     echo "Benvenuto";
     } else {
-        
+        header('Location: /index.php?status=401');
     } 
 } catch (PDOException $e) {
     echo ("[ERRORE] Query SQL (Insert) non riuscita. Errore: " . $e->getMessage());

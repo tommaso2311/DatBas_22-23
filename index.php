@@ -14,11 +14,10 @@
   <?php
         require_once 'connect.php';
         $msg='';
-        if (isset($_GET['error']) && $_GET['error']== 1) {
+        if (! (empty($_GET['status']) && $_GET['status']==401) ) {
                 $msg = "Credenziali sbagliate";
             }
       ?>
-  <html>
 
   <body>
   	<form action="login.php" method="head">
@@ -26,7 +25,7 @@
   	<?php
         if($msg!='')
         {
-          echo "<font color='red'>".$msg."</font>";
+          echo "<font color='red' >".$msg."</font>";
         }
     ?>
   	<label for="emailL">e-mail:</label>
