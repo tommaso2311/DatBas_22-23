@@ -162,5 +162,10 @@ CREATE TABLE ASSOCIAZIONE_LISTA (
     UNIQUE KEY (codiceSondaggio)
 )ENGINE='INNODB';
 
-
+DELIMITER $$
+## • Autenticazione sulla piattaforma
+CREATE PROCEDURE Login(IN email varchar(30), OUT isRegistered int)
+BEGIN
+      SELECT count(*) INTO isRegistered FROM UTENTE u WHERE u.eMail = email;         
+END $$
 

@@ -1,0 +1,14 @@
+form {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      padding:0.01em 16px;
+      background-color: #83c5be;
+    }
+#title {
+	background-color: #006d77;
+	padding:0.01em 16px;
+	color: #edf6f9;
+	font-style: italic;
+	text-shadow: 2px 2px 7px  #42999a;
+}
