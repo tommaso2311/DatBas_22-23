@@ -14,7 +14,7 @@
   <?php
         require_once 'connect.php';
         $msg='';
-        if (! (empty($_GET['status']) && $_GET['status']==401) ) {
+        if ((isset($_GET['status']) && $_GET['status']==401) ) {
                 $msg = "Credenziali sbagliate";
             }
       ?>
