@@ -17,7 +17,6 @@
         if (isset($_GET['error']) && $_GET['error']== 1) {
                 $msg = "Credenziali sbagliate";
             }
-
       ?>
   <html>
 
@@ -32,7 +31,7 @@
     ?>
   	<label for="emailL">e-mail:</label>
       <input type="email" name="emailL" id="emailL" placeholder="e-mail">
-      <input type="submit" value="LogIn">
+      <input type="submit" value="LogIn" class="submit">
   	</form>
   	
     <form action="register.php" method="post">
@@ -48,7 +47,7 @@
       <input type="number" name="annoNascita" min="1900" max="2023" step="1" placeholder="anno di nascita" id="anno">
       <label for="luogo">Luogo di Nascita: </label>
       <input type="text" name="luogoNascita" placeholder= "luogo di nascita" id="luogo">
-      <input type="submit" value="invia">
+      <input type="submit" value="Invia" class="submit">
      </form>
   </body>
 
