@@ -1,32 +1,87 @@
-#title {
-	background-color: #004B52;
-	color: #e4f7f9;
-	text-shadow: 1px 1px 4px  #7c8686;
-	padding:0.9em 25px;
-	font-style: italic;
+body{
+	background-color: #F7F4F3;
+	justify-content: center;
+	align-items: center;
+	margin:0;
+	display:flex;
+	flex-direction:column;
+}
+.main-header{
+	background-color: #16697A;
+	width:100%;
+	height:30%;
 	display: box;
 }
+#title {
+	color: #F2F7F8;
+	text-shadow: 1px 1px 4px  #00000040;
+	padding:0.9em;
+	font-style: italic;
+	width: auto;
+	margin:0; /*obbligatorio altrimenti fa fastidioso spazietto sopra*/
+}
+/*corpo*/
+.container{
+	position:relative;
+	margin:2%;
+	width:80%;
+	min-width:800px;
+	min-height:650px;
+}
+.login, .register{
+	position:absolute;
+	margin:15px;
+	top:5%; /*sposta il lato a sx di tot rispetto al suo antenato*/
+	
+}
+.login{ left: 10%; 	width:40%;}
+.register{ right: 10%; 	width:30%;}
+
+.login form { background-color: #A9D3DB; }
+.register form { background-color: #489FB5; }
+
+.login h2{ margin-block-end:0; }
+.login h3{ padding: 0; margin:0;}
+
 form {
       display: flex;
       flex-direction: column;
-      width: 30%;
-      padding:0.7em 20px;
-      background-color: #d2e9ea;
-    }
+      width: 100%;
+      padding:0.7em;
+      padding-left: 20px;
+   	  background-color: transparent;
+      box-shadow: 0px 5px 10px #00000040;
+ }
 form label{
-	color:#002529;
+	color:#FFFFFF;
 	font-family: "Lucida Console", monospace;
+	padding:5px;
 }
 form input.submit{
-	padding: -3px;
-	border-radius: 8px;
-	background-color: #68B6B0;
-	box-shadow: 2px 3px 5px #a19693 ;
+	padding: 3px;
+	border-radius: 15px;
+	border: 2px solid #E08300;
+	background: #FFA62B;
 	color: #000000;
 	font-size: 10pt;
-	width: 75px;
+	font-weight: bold;
+	width: 35%;
 	margin:10px;
 }
-form input.text{
-	
+form input.submit:hover{
+	box-shadow:  4px 4px 10px #312521,
+             	-2px -2px 10px #EFE9E7;
 }
+input.text{
+  font-size: 75%;
+  padding: 0.8em;
+  /*outline: none;*/
+  border: 2px solid #19778A;
+  background-color: #EFE9E7;
+  border-radius: 7px;
+  width: 80%;
+}
+input.text:hover {
+	box-shadow: 4px 4px 7px #0D3C45 ;
+}
+

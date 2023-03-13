@@ -177,4 +177,9 @@ CREATE PROCEDURE Login(IN email varchar(30), OUT isRegistered int)
 BEGIN
       SELECT count(*) INTO isRegistered FROM UTENTE u WHERE u.eMail = email;         
 END $$
-
+## • registrazione sulla piattaforma 
+CREATE PROCEDURE RegistrazioneUtente(IN email varchar(30), nome varchar(30), cognome varchar(30), Anno_di_nascita varchar(30), Luogo_di_Nascita varchar(30))
+BEGIN
+	INSERT INTO UTENTE(eMail, Nome, Cognome, `Anno di nascita`, `Luogo di nascita`) 
+                VALUES (email, nome, cognome, Anno_di_nascita, Luogo_di_Nascita);
+END $$
