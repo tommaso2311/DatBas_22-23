@@ -22,7 +22,7 @@ CREATE TABLE UTENTE_PREMIUM (
     costoAbbonamento varchar(30),
     numSondaggi int DEFAULT 0,
     inizioAbbonamento datetime DEFAULT NOW(),
-    fineAbbonamento datetime NOT NULL,
+    fineAbbonamento datetime DEFAULT (NOW() + INTERVAL 1 YEAR),
     FOREIGN KEY (email) REFERENCES UTENTE(eMail)
 ) ENGINE= 'INNODB';
 
@@ -43,7 +43,7 @@ CREATE TABLE DOMINIO (
  Descrizione varchar(120)
 ) ENGINE = 'INNODB';
 
-CREATE TABLE INTERESSI (
+CREATE TABLE INTERESSAMENTO (
 	emailUtente varchar(30) REFERENCES UTENTE(eMail),
     nomeDominio varchar(30) REFERENCES DOMINIO(parolaChiave),
     PRIMARY KEY (emailUtente, nomeDominio)
@@ -53,7 +53,7 @@ CREATE TABLE INTERESSI (
 CREATE TABLE SONDAGGIO (
 	Codice varchar(30) PRIMARY KEY,
     Titolo varchar(30) NOT NULL,
-    maxUTENTE int DEFAULT 100,
+    maxUtenti int DEFAULT 100,
     dataCreazione datetime DEFAULT NOW(),
     dataChiusura datetime DEFAULT (NOW() + INTERVAL 1 MONTH), 
     stato ENUM('APERTO', 'CHIUSO'),
@@ -65,7 +65,7 @@ CREATE TABLE CREAZIONE_SONDAGGIO_UTENTE(
     codiceNuovoSondaggio varchar(30) PRIMARY KEY REFERENCES SONDAGGIO(Codice)
 ) ENGINE = 'INNODB';
 
-CREATE TABLE CREAZIONE_SONDAGGIO_AZIENDE(
+CREATE TABLE CREAZIONE_SONDAGGIO_PREMIUM(
 	codiceAzienda varchar(30) REFERENCES AZIENDE(codiceFiscale),
     codiceNuovoSondaggio varchar(30) PRIMARY KEY REFERENCES SONDAGGIO(Codice)
 ) ENGINE = 'INNODB';
@@ -95,19 +95,28 @@ CREATE TABLE DOMANDA_APERTA (
 ) ENGINE='INNODB';
 
 CREATE TABLE OPZIONE(
-	idOpzione int AUTO_INCREMENT,
+	idOpzione int,
     idDomanda varchar(30) REFERENCES DOMANDA(ID),
     Testo varchar(120),
     PRIMARY KEY (idOpzione, idDomanda)
 )ENGINE='INNODB';
+DELIMITER //
+CREATE TRIGGER DefinisciIdOpzione BEFORE INSERT ON OPZIONE
+FOR EACH ROW
+BEGIN
+	SET @id= 0;
+    SELECT COUNT(*) INTO @id FROM OPZIONE WHERE idDomanda=new.idDomanda;
+    SET new.idOpzione= @id;
+END//
+DELIMITER ;
 
-CREATE TABLE INSERIMENTO_DOMANDE_UTENTI(
-	emailUtente varchar(30) REFERENCES UTENTE(eMail),
+CREATE TABLE INSERIMENTO_DOMANDA_PREMIUM(
+	emailPremium varchar(30) REFERENCES UTENTE(eMail),
     idDomanda varchar(30) REFERENCES DOMANDA(ID),
-    PRIMARY KEY (emailUtente, idDomanda)
+    PRIMARY KEY (emailPremium, idDomanda)
 ) ENGINE ='INNODB';
 
-CREATE TABLE INSERIMENTO_DOMANDE_AZIENDA(
+CREATE TABLE INSERIMENTO_DOMANDA_AZIENDA(
 	codiceAzienda varchar(30) REFERENCES AZIENDE(codiceFiscale),
     idDomanda varchar(30) REFERENCES DOMANDA(ID),
     PRIMARY KEY (codiceAzienda, idDomanda)
@@ -149,7 +158,7 @@ CREATE TABLE INVITO (
 ) ENGINE='INNODB'; 
 
 #tabelle lista UTENTE
-CREATE TABLE LISTA_UTENTE (
+CREATE TABLE LISTA_UTENTI (
 	Numero int,
     emailUtente varchar(30) REFERENCES UTENTE(eMail),
     PRIMARY KEY (Numero, emailUtente)
@@ -157,7 +166,7 @@ CREATE TABLE LISTA_UTENTE (
 
 CREATE TABLE ASSOCIAZIONE_LISTA (
 	codiceSondaggio varchar(30) REFERENCES SONDAGGIO(Codice),
-    numeroLista int REFERENCES LISTA_UTENTE(Numero),
+    numeroLista int REFERENCES LISTA_UTENTI(Numero),
     PRIMARY KEY ( codiceSondaggio, numeroLista),
     UNIQUE KEY (codiceSondaggio)
 )ENGINE='INNODB';
@@ -168,4 +177,9 @@ CREATE PROCEDURE Login(IN email varchar(30), OUT isRegistered int)
 BEGIN
       SELECT count(*) INTO isRegistered FROM UTENTE u WHERE u.eMail = email;         
 END $$
-
+## • registrazione sulla piattaforma 
+CREATE PROCEDURE RegistrazioneUtente(IN email varchar(30), nome varchar(30), cognome varchar(30), Anno_di_nascita varchar(30), Luogo_di_Nascita varchar(30))
+BEGIN
+	INSERT INTO UTENTE(eMail, Nome, Cognome, `Anno di nascita`, `Luogo di nascita`) 
+                VALUES (email, nome, cognome, Anno_di_nascita, Luogo_di_Nascita);
+END $$

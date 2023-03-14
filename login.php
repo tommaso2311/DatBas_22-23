@@ -16,7 +16,8 @@ try {
     if ($isLogged['result']==1){
     echo "Benvenuto";
     } else {
-        header('Location: /index.php?status=401');
+        header("Location: /index.php?status=401");
+        exit();
     } 
 } catch (PDOException $e) {
     echo ("[ERRORE] Query SQL (Insert) non riuscita. Errore: " . $e->getMessage());
