@@ -1,8 +1,15 @@
 <?php
     session_start();
         require_once 'connect.php';
+        $conn = connectToDatabase();
         $user = $_SESSION['name'];
-      ?>
+        $query='';
+        if(isset($_GET['inviti'])){
+            $query = "CALL VisualizzaInviti('$user')";
+        } else if(isset($_GET['sondaggio'])){
+            $query = "CALL VisualizzaSondaggio('$user')";
+        }
+?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -19,16 +26,34 @@
   
 <div class="container">
   <div class="userMenu">
-  		<form method="get">
-  			<input type="submit" class="userBtn" value="Visualizza inviti" name="inviti"> 
+  		<form method="get" target="visualizza">
+  			<input type="submit" class="userBtn" value="Visualizza Inviti" name="inviti"> 
 			<input type="submit" class="userBtn" value="Visualizza sondaggio" name="sondaggio"> 
   	</form>
   </div>
   	
-  <div class="view">
-  
+  <div class="view" id="visualizza">
+  	 <?php    
+ try{ 
+     if($query != ''){
+        $result = $conn -> query($query);
+     }
+ } catch (PDOException $e) {
+    echo ("[ERRORE] Query SQL (Visualizza Inviti) non riuscita. Errore: " . $e->getMessage());
+    exit();
+ }
+ foreach($result as $row){
+     echo "<p id=''> Mittente: ".$row['Autore']." <br> Codice Sondaggio: ".$row['codiceSondaggio']."</p>";
+ }
+ ?>
   </div>
 </div>
 </body>
 
 </html>
+
+  			
+  			
+  			
+  			
+  			

@@ -5,10 +5,10 @@ $conn = connectToDatabase();
 $email = $_GET['emailL'];
 try {
     $exists = "CALL Login('$email', @result)";
-    $result = $conn ->query($exists);
+    $result = $conn -> query($exists);
     $select = "SELECT @result as result";
-    $result = $conn ->query($select);
-    $isLogged = $result->fetch();
+    $result = $conn -> query($select);
+    $isLogged = $result -> fetch();
     
     if ($isLogged['result']==1){
         session_start();

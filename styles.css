@@ -88,8 +88,9 @@ input.text:hover {
 
 /*PAGINA UTENTE*/
 #subtitle{
-	font-size: 15px;
+	font-size: 20px;
 	color: #FFFFFF;
+	padding:12px;
 }
 .userMenu{
 	position: absolute;
@@ -120,4 +121,12 @@ input.text:hover {
 .userBtn:hover {
 	box-shadow:  9px 9px 10px #8EA5A9,
              	-8px -8px 10px #C5E8EC;
+}
+
+.view{
+	background-color: #ffa62b;
+	left:45%;
+    position: absolute;
+    width: 40%;
+    heigth: 70%;
 }
