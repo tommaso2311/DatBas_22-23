@@ -1,3 +1,5 @@
+# file temporaneo
+
 DELIMITER $$
 ## • Autenticazione sulla piattaforma
 CREATE PROCEDURE Login(IN email varchar(30), OUT isRegistered int)
@@ -8,7 +10,7 @@ END $$
 ## • registrazione sulla piattaforma 
 CREATE PROCEDURE RegistrazioneUtente(IN email varchar(30), nome varchar(30), cognome varchar(30), Anno_di_nascita varchar(30), Luogo_di_Nascita varchar(30))
 BEGIN
-	INSERT INTO UTENTE(eMail, Nome, Cognome, `Anno di nascita`, `Luogo di nascita`) 
+	INSERT INTO UTENTE(eMail, Nome, Cognome, AnnoDiNascita, LuogoDiNascita) 
                 VALUES (email, nome, cognome, Anno_di_nascita, Luogo_di_Nascita);
 END $$
 
@@ -95,5 +97,18 @@ CREATE PROCEDURE VisualizzaRisposte(IN codiceSondaggio varchar(30))
 BEGIN
 	SELECT testoRisposta FROM RISPOSTA, COMPOSIZIONE, SONDAGGIO WHERE codiceDomanda = COMPOSIZIONE.idDomanda AND COMPOSIZIONE.codiceSondaggio = SONDAGGIO.Codice
 END
+
+##• Visualizzare i premi disponibili
+CREATE PROCEDURE VisualizzaPremi()
+BEGIN
+	SELECT Nome, Descrizione, minPunti, Foto FROM PREMIO
+END
+
+##• Visualizzare la classifica degli utenti in base al campo totalebonus
+CREATE PROCEDURE VediClassifica()
+BEGIN
+	SELECT Nome, Cognome, totaleBonus FROM UTENTE
+	ORDER BY totaleBonus DESC;
+END $$
 
 

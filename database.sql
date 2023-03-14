@@ -7,15 +7,25 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
 #tabelle UTENTE
 CREATE TABLE UTENTE (
-  `eMail` varchar(30) NOT NULL PRIMARY KEY,
-  `Nome` varchar(30) DEFAULT 'pippo' NOT NULL,
-  `Cognome` varchar(30) NOT NULL, 
-  `Anno di nascita` varchar(30) NOT NULL,
-  `Luogo di nascita` varchar(30) NOT NULL, 
-  `totale bonus` int(11) NOT NULL DEFAULT '0' 
+  eMail varchar(30) NOT NULL PRIMARY KEY,
+  Nome varchar(30) DEFAULT 'pippo' NOT NULL,
+  Cognome varchar(30) NOT NULL, 
+  AnnoDiNascita varchar(30) NOT NULL,
+  LuogoDiNascita varchar(30) NOT NULL, 
+  totaleBonus int(11) NOT NULL DEFAULT '0' 
 ) ENGINE="InnoDB";
+
+#utenti di prova
+INSERT INTO UTENTE(eMail, Nome, Cognome, AnnoDiNascita, LuogoDiNascita, totaleBonus) 
+                VALUES ("prova@mail", "AA", "AA", 2001, "QUI", 7);
+INSERT INTO UTENTE(eMail, Nome, Cognome, AnnoDiNascita, LuogoDiNascita, totaleBonus) 
+                VALUES ("test@mail", "BB", "BB", 2001, "LI", 5);
+INSERT INTO UTENTE(eMail, Nome, Cognome, AnnoDiNascita, LuogoDiNascita, totaleBonus) 
+                VALUES ("cavia@mail", "CC", "CC", 2001, "LA", 10);
+
 
 CREATE TABLE UTENTE_PREMIUM (
 	email varchar(30) PRIMARY KEY,
@@ -172,14 +182,19 @@ CREATE TABLE ASSOCIAZIONE_LISTA (
 )ENGINE='INNODB';
 
 DELIMITER $$
+
+# STORED PROCEDURES
+
 ## • Autenticazione sulla piattaforma
 CREATE PROCEDURE Login(IN email varchar(30), OUT isRegistered int)
 BEGIN
-      SELECT count(*) INTO isRegistered FROM UTENTE u WHERE u.eMail = email;         
+      SELECT count(*) INTO isRegistered FROM UTENTE AS u WHERE u.eMail = email;         
 END $$
+
 ## • registrazione sulla piattaforma 
 CREATE PROCEDURE RegistrazioneUtente(IN email varchar(30), nome varchar(30), cognome varchar(30), Anno_di_nascita varchar(30), Luogo_di_Nascita varchar(30))
 BEGIN
-	INSERT INTO UTENTE(eMail, Nome, Cognome, `Anno di nascita`, `Luogo di nascita`) 
+	INSERT INTO UTENTE(eMail, Nome, Cognome, AnnoDiNascita, LuogoDiNascita) 
                 VALUES (email, nome, cognome, Anno_di_nascita, Luogo_di_Nascita);
 END $$
+
