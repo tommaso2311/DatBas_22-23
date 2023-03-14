@@ -20,7 +20,7 @@
   
 <div class="container">
   <div class="login">
-  		<form action="login.php" method="head">
+  		<form action="login.php" method="head" class="indexForm">
   			<h2>Login</h2>
   			<h3>Accedi se hai già un account</h3>
   			<?php
@@ -36,7 +36,7 @@
   </div>
   	
   <div class="register">
-    <form action="register.php" method="post">
+    <form action="register.php" method="post" class="indexForm">
       	<h2>Registrati</h2>
 
       <label for="email">e-mail:</label>

@@ -5,7 +5,7 @@ function connectToDatabase()
       $hostname = "localhost",
       $dbname = "DATABASE_PROJ",
       $user = "root", // da cambiare con i vostri dati
-      $pass = "password", // da cambiare con i vostri dati
+      $pass = "M@rc0DiF3lic3", // da cambiare con i vostri dati
    ];
 
    try {
